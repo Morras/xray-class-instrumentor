@@ -1,0 +1,12 @@
+language: java
+
+jdk: oraclejdk11
+
+before_install:
+  - wget https://s3.dualstack.us-east-2.amazonaws.com/aws-xray-assets.us-east-2/xray-daemon/aws-xray-daemon-linux-3.x.zip -O xray-daemon.zip
+  - unzip xray-daemon.zip
+  - ls
+
+install:
+  - ./xray -n eu-west-1 > xray.logs &
+
