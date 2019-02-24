@@ -14,6 +14,16 @@ import java.util.UUID;
 
 import static org.junit.Assert.*;
 
+/**
+ * Integration test to make sure aspect weaving is working as intended.
+ *
+ * To run the integration tests, you need to have a running X-Ray daemon, as the tests
+ * are creating traces and sending them to X-Ray and then retrieves the traces to see
+ * if the match the expected traces.
+ *
+ * Since the weaved method only adds sub segments, all the tests needs to start and end
+ * a trace that the sub segments can be added to.
+ */
 public class AdviceIntegrationTest {
 
     private AnnotatedClass annotatedClass = new AnnotatedClass();

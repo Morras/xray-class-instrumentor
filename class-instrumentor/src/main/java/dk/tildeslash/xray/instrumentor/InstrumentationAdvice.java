@@ -18,6 +18,8 @@ public class InstrumentationAdvice {
         this.xrayWrapper = xrayWrapper;
     }
 
+    // Execute on either all methods in a class annotated with Instrument,
+    // or methods annotated directly with the annotation
     @Around("(@annotation(Instrument) && execution(* *(..))) || " +
             "execution(* (@Instrument *).*(..))")
     public Object instrumentMethod(ProceedingJoinPoint joinPoint) throws Throwable {
