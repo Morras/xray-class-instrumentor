@@ -1,5 +1,7 @@
 # xray-class-instrumentor
 
+[![Build Status](https://travis-ci.org/Morras/xray-class-instrumentor.svg?branch=master)](https://travis-ci.org/Morras/xray-class-instrumentor)
+
 This package will add subsegments of AWS X-Ray traces around method bodies.
 
 It is similar to the AWS provided package for adding subsegments via Spring aspect oriented programming (https://docs.aws.amazon.com/xray/latest/devguide/xray-sdk-java-aop-spring.html), however the weaving is done at compile time without using Spring, allowing instrumentation of code with subsegments for a smaller runtime and upstart overhead. 
