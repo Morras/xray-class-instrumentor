@@ -71,7 +71,7 @@ To use the package with maven, add the follwing to your pom file.
     <dependency>
         <groupId>dk.tildeslash.xray</groupId>
         <artifactId>class-instrumentor</artifactId>
-        <version>1.0</version>
+        <version>1.1.0</version>
     </dependency>
 </dependencies>
 ```
