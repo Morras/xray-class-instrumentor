@@ -2,8 +2,13 @@ package dk.tildeslash.xray.instrumentor;
 
 import com.amazonaws.xray.entities.Subsegment;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 @Aspect
 public class InstrumentationAdvice {
@@ -23,9 +28,27 @@ public class InstrumentationAdvice {
     @Around("(@annotation(Instrument) && execution(* *(..))) || " +
             "execution(* (@Instrument *).*(..))")
     public Object instrumentMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+
+        Signature signature = joinPoint.getSignature();
+
+        String subsegmentNameOverride = "";
+        if (signature instanceof MethodSignature) {
+            MethodSignature methodSignature = (MethodSignature) signature;
+            Method method = methodSignature.getMethod();
+            if (method.isAnnotationPresent(Instrument.class)) {
+                Instrument annotation = method.getAnnotation(Instrument.class);
+                subsegmentNameOverride = annotation.subsegment();
+            }
+        }
+
         String joinPintClass = joinPoint.getTarget().getClass().getSimpleName();
-        String methodName = joinPoint.getSignature().getName();
-        String subsegmentName = joinPintClass + "#" + methodName;
+        String methodName = signature.getName();
+        String subsegmentName;
+        if (subsegmentNameOverride.isBlank()) {
+            subsegmentName = joinPintClass + "#" + methodName;
+        }  else {
+            subsegmentName = subsegmentNameOverride;
+        }
 
         Subsegment subsegment = xrayWrapper.beginSubsegment(subsegmentName);
 

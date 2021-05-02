@@ -7,7 +7,7 @@
     <parent>
         <artifactId>instrumentor</artifactId>
         <groupId>dk.tildeslash.xray</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.1.0</version>
     </parent>
 
     <artifactId>class-instrumentor</artifactId>

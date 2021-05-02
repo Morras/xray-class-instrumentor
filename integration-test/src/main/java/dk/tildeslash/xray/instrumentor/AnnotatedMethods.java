@@ -10,6 +10,11 @@ public class AnnotatedMethods {
         throw new RuntimeException();
     }
 
+    @Instrument(subsegment = "TestOfOverriddenSegmentName")
+    public void overriddenSegmentName() {
+
+    }
+
     public void unannotatedMethod() {
 
     }

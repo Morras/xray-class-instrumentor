@@ -6,7 +6,7 @@
 
     <groupId>dk.tildeslash.xray</groupId>
     <artifactId>instrumentor</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <name>xray-instrumentor</name>
@@ -162,7 +162,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

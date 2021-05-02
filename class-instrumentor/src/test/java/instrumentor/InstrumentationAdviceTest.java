@@ -1,14 +1,17 @@
 package instrumentor;
 
 import com.amazonaws.xray.entities.Subsegment;
+import dk.tildeslash.xray.instrumentor.Instrument;
 import dk.tildeslash.xray.instrumentor.InstrumentationAdvice;
 import dk.tildeslash.xray.instrumentor.XrayWrapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -38,14 +41,14 @@ public class InstrumentationAdviceTest {
     }
 
     @Test
-    public void AdviceShouldBeginAndEndSubsegmentBeforeMethodBody() throws Throwable {
+    public void adviceShouldBeginAndEndSubsegmentBeforeMethodBody() throws Throwable {
         advice.instrumentMethod(joinPoint);
         verify(xrayWrapper).beginSubsegment("ArrayList#testMethodName");
         verify(xrayWrapper).endSubsegment();
     }
 
     @Test
-    public void AdviceShouldReturnValueFromMethodBody() throws Throwable {
+    public void adviceShouldReturnValueFromMethodBody() throws Throwable {
         String methodReturn = "test value";
         when(joinPoint.proceed()).thenReturn(methodReturn);
         Object returnObject = advice.instrumentMethod(joinPoint);
@@ -53,7 +56,7 @@ public class InstrumentationAdviceTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void AdviceShouldLogRuntimeExceptionsToXRayAndRethrow() throws Throwable {
+    public void adviceShouldLogRuntimeExceptionsToXRayAndRethrow() throws Throwable {
         Exception thrownException = new RuntimeException();
         when(joinPoint.proceed()).thenThrow(thrownException);
 
@@ -79,7 +82,7 @@ public class InstrumentationAdviceTest {
     }
 
     @Test(expected = Throwable.class)
-    public void AdviceShouldLogOtherThrowablesToXRayAndRethrow() throws Throwable {
+    public void adviceShouldLogOtherThrowablesToXRayAndRethrow() throws Throwable {
         Throwable thrownException = new Throwable();
         when(joinPoint.proceed()).thenThrow(thrownException);
 

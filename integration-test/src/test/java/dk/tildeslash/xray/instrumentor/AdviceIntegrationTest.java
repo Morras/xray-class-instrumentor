@@ -26,8 +26,8 @@ import static org.junit.Assert.*;
  */
 public class AdviceIntegrationTest {
 
-    private AnnotatedClass annotatedClass = new AnnotatedClass();
-    private AnnotatedMethods annotatedMethods = new AnnotatedMethods();
+    private final AnnotatedClass annotatedClass = new AnnotatedClass();
+    private final AnnotatedMethods annotatedMethods = new AnnotatedMethods();
     private static com.amazonaws.services.xray.AWSXRay xRayClient;
 
     @BeforeClass
@@ -96,7 +96,20 @@ public class AdviceIntegrationTest {
         String traceDocument = getTraceDocument(segment);
 
         assertFalse("Raw trace should not contain any subsegments",
-                traceDocument.contains("sub\"subsegments\""));
+                traceDocument.contains("\"subsegments\""));
+    }
+
+    @Test
+    public void annotationCanOverrideSubsegmentName() throws InterruptedException {
+        String traceName = UUID.randomUUID().toString();
+        Segment segment = AWSXRay.beginSegment(traceName);
+
+        annotatedMethods.overriddenSegmentName();
+        AWSXRay.endSegment();
+        String traceDocument = getTraceDocument(segment);
+
+        assertTrue("Raw trace should contain a subsegment with an overridden name 'TestOfOverriddenSegmentName'",
+                traceDocument.contains("\"TestOfOverriddenSegmentName\""));
     }
 
     private String getTraceDocument(Segment segment) throws InterruptedException {
